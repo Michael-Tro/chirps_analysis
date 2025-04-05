@@ -5,8 +5,17 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "dask==2024.10.0",
+    "folium>=0.19.5",
     "ipykernel>=6.29.5",
     "jupyterlab>=4.3.6",
+    "matplotlib>=3.10.1",
     "notebook>=7.3.3",
+    "odc>=0.1.0",
+    "odc-stac>=0.3.11",
+    "osmnx>=2.0.2",
     "pandas>=2.2.3",
+    "pystac-client>=0.8.6",
+    "rioxarray>=0.18.2",
+    "xarray>=2025.3.1",
 ]
