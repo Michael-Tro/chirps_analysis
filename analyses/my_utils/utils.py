@@ -9,39 +9,44 @@ from functools import partial
 from concurrent.futures import ThreadPoolExecutor
 
 
-def generate_yearly_dates(start_date_str, end_date_str):
+def generate_monthly_dates(start_date_str, end_date_str):
     """
-    Generates start and end dates for each year within a given range.
+    Generates start and end dates for each month within a given range.
 
     Args:
         start_date_str (str): The start date in "YYYY-MM-DD" format.
         end_date_str (str): The end date in "YYYY-MM-DD" format.
 
     Returns:
-        list: A list of tuples, where each tuple contains the start and end dates
-              for a year in "YYYY-MM-DD" format.
+        list: A list of tuples, where each tuple contains the start and end dates for a month in "YYYY-MM-DD" format.
     """
 
     start_date = datetime.strptime(start_date_str, "%Y-%m-%d")
     end_date = datetime.strptime(end_date_str, "%Y-%m-%d")
 
-    yearly_dates = []
-    current_year = start_date.year
+    monthly_dates = []
+    current_date = start_date
 
-    while current_year <= end_date.year:
-        year_start = datetime(current_year, 1, 1)
-        year_end = datetime(current_year, 12, 31)
+    while current_date <= end_date:
+        year = current_date.year
+        month = current_date.month
 
-        if year_start < start_date:
-            year_start = start_date
+        month_start = datetime(year, month, 1)
+        if month == 12:
+            month_end = datetime(year + 1, 1, 1) - timedelta(days=1)
+        else:
+            month_end = datetime(year, month + 1, 1) - timedelta(days=1)
 
-        if year_end > end_date:
-            year_end = end_date
+        if month_start < start_date:
+            month_start = start_date
 
-        yearly_dates.append((year_start.strftime("%Y-%m-%d"), year_end.strftime("%Y-%m-%d")))
-        current_year += 1
+        # if year_end > end_date:
+        #     year_end = end_date
 
-    return yearly_dates
+        monthly_dates.append((month_start.strftime("%Y-%m-%d"), month_end.strftime("%Y-%m-%d")))
+        current_date = month_end + timedelta(days=1)
+
+    return monthly_dates
 
 measurements = ["rainfall"]
 crs = "EPSG:4326"
